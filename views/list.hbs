@@ -1,0 +1,45 @@
+<p class="display-1 ps-5 pt-5">LIST</p>
+
+<table class="container ms-5 me-5">
+    <tr class="border-bottom pb-5">
+        <th class="p-2">_id</th>
+        <th class="p-2">ubezpieczony</th>
+        <th class="p-2">benzyna</th>
+        <th class="p-2">uszkodzony</th>
+        <th class="p-2">naped 4x4</th>
+    </tr>
+
+    {{#each arr}}
+
+    <tr class="border-bottom">
+        <td class="p-2">{{_id}}</td>
+        <td class="p-2">{{ubezpieczony}}</td>
+        <td class="p-2">{{benzyna}}</td>
+        <td class="p-2">{{uszkodzony}}</td>
+        <td class="p-2">{{naped}}</td>
+        <td><button type="button" formaction="/delete" onclick='Delete("{{_id}}")'
+                class="mt-1 btn btn-danger">DELETE</button></td>
+    </tr>
+    {{/each}}
+</table>
+
+<script>
+      function Delete(id) {
+            if (confirm("Usunąć element o id: " + id + "?")) {
+                console.log("tak")
+                const data = JSON.stringify({
+                    id: id
+                })
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: data
+                };
+                location.reload()
+                fetch("/delete", options)
+                    .catch(error => console.log(error));
+            }
+        }
+</script>

@@ -1,0 +1,117 @@
+<p class="display-1 ps-5 pt-5">EDIT</p>
+
+<table class="container ms-5 me-5">
+  <tr class="border-bottom pb-5">
+    <th class="p-2">_id</th>
+    <th class="p-2">ubezpieczony</th>
+    <th class="p-2">benzyna</th>
+    <th class="p-2">uszkodzony</th>
+    <th class="p-2">naped 4x4</th>
+  </tr>
+
+  {{#each arr}}
+    {{#if edit}}
+      <tr class="border-bottom">
+        <td class="p-2">{{_id}}
+
+        </td>
+        <td class="p-2">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            name="name_ubezpieczony"
+            id="ubezpieczony"
+          >
+            <option value="{{ubezpieczony}}">Aktualnie:
+              {{ubezpieczony}}</option>
+            <option value="tak">Tak</option>
+            <option value="nie">Nie</option>
+          </select>
+        </td>
+        <td class="p-2">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            name="name_benzyna"
+            id="benzyna"
+          >
+            <option value="{{benzyna}}">Aktualnie: {{benzyna}}</option>
+            <option value="tak">Tak</option>
+            <option value="nie">Nie</option>
+          </select>
+        </td>
+        <td class="p-2">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            name="name_uszkodzony"
+            id="uszkodzony"
+          >
+            <option value="{{uszkodzony}}">Aktualnie: {{uszkodzony}}</option>
+            <option value="tak">Tak</option>
+            <option value="nie">Nie</option>
+          </select>
+        </td>
+        <td class="p-2">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            name="name_naped"
+            id="naped"
+          >
+            <option value="{{naped}}">Aktualnie: {{naped}}</option>
+            <option value="tak">Tak</option>
+            <option value="nie">Nie</option>
+          </select>
+        </td>
+        <td><button
+            type="button"
+            formaction="/edit2"
+            onclick='Edit2("{{_id}}")'
+            class="mt-1 btn btn-danger"
+          >UPDATE</button>
+          <button
+            type="button"
+            formaction="/cancel"
+            onclick='Cancel("{{_id}}")'
+            class="mt-1 btn btn-danger"
+          >CANCEL</button>
+        </td>
+      </tr>
+    {{else}}
+      <tr class="border-bottom">
+        <td class="p-2">{{_id}}</td>
+        <td class="p-2">{{ubezpieczony}}</td>
+        <td class="p-2">{{benzyna}}</td>
+        <td class="p-2">{{uszkodzony}}</td>
+        <td class="p-2">{{naped}}</td>
+        <td><button
+            type="button"
+            formaction="/edit"
+            onclick='Edit("{{_id}}")'
+            class="mt-1 btn btn-danger"
+          >EDIT</button>
+        </td>
+      </tr>
+    {{/if}}
+  {{/each}}
+</table>
+
+<script>
+  let n = 0; function Edit(id) { console.log("tak") const data =
+  JSON.stringify({ id: id }) const options = { method: "POST", headers: {
+  "Content-Type": "application/json" }, body: data }; fetch("/edit", options)
+  .catch(error => console.log(error)); location.reload() } function Cancel(id) {
+  const data = JSON.stringify({ id: id }) const options = { method: "POST",
+  headers: { "Content-Type": "application/json" }, body: data };
+  fetch("/cancel", options).catch(error => console.log(error));
+  location.reload() } function Edit2(id) { let ubezpieczony =
+  document.querySelector("#ubezpieczony").value let benzyna =
+  document.querySelector("#benzyna").value let uszkodzony =
+  document.querySelector("#uszkodzony").value let naped =
+  document.querySelector("#naped").value const data = JSON.stringify({ id: id,
+  ubezpieczony: ubezpieczony, benzyna: benzyna, uszkodzony: uszkodzony, naped:
+  naped }) const options = { method: "POST", headers: { "Content-Type":
+  "application/json" }, body: data }; fetch("/edit2", options).then(data =>
+  Cancel(id)).catch(error => console.log(error)); }
+</script>

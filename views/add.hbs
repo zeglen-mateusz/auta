@@ -1,0 +1,70 @@
+<p class="display-1 ps-5 pt-5">DODAJ</p>
+<div id="komunikat" class="display-5 ms-5 mb-3 me-5 font-monospace text-light border-info rounded bg-secondary bg-gradient text-20 fs-5 p-2 "></div>
+
+
+<form action="/handleForm" method="GET" class="d-flex flex-column ps-5">
+    <div class="pb-3 d-flex align-items-center">
+        <input class="me-4 form-check-input" type="checkbox" value="ubezpieczony" name="ubezpieczony" id="ubezpieczony">
+        <label class="h2 form-check-label" for="ubezpieczony">
+            Ubezpieczony
+        </label>
+    </div>
+    <div class="pb-3 d-flex align-items-center">
+        <input class="me-4 form-check-input" type="checkbox" value="benzyna" name="benzyna" id="benzyna">
+        <label class="h2 form-check-label" for="benzyna">
+            Benzyna
+        </label>
+    </div>
+    <div class="pb-3 d-flex align-items-center">
+        <input class="me-4 form-check-input" type="checkbox" value="uszkodzony" name="uszkodzony" id="uszkodzony">
+        <label class="h2 form-check-label" for="uszkodzony">
+            Uszkodzony
+        </label>
+    </div>
+    <div class="pb-3 d-flex align-items-center">
+        <input class="me-4 form-check-input" type="checkbox" value="naped" name="naped" id="naped">
+        <label class="h2 form-check-label" for="naped">
+            Napęd 4x4
+        </label>
+    </div>
+    <div>
+        <button onclick="add()" type="button" class="btn btn-outline-dark btn-lg">add</button>
+    </div>
+</form>
+<script>
+    document.getElementById("komunikat").style.display = "none"
+    function add() {
+
+        var ubezpieczony = document.querySelector("#ubezpieczony").checked
+        var benzyna = document.querySelector("#benzyna").checked
+        var uszkodzony = document.querySelector("#uszkodzony").checked
+        var naped = document.querySelector("#naped").checked
+
+        const data = JSON.stringify({
+            ubezpieczony: ubezpieczony == true ? "tak": "nie",
+            benzyna: benzyna == true ? "tak" : "nie",
+            uszkodzony: uszkodzony == true ? "tak" : "nie",
+            naped: naped == true ? "tak" : "nie" 
+        })
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data
+        };
+
+        fetch("/handleForm", options)
+            .then(response => response.json()) // konwersja na obiekt json, jeśli konieczne
+            .then(data => getResponse(data)) // sformatowane z wcięciami dane odpowiedzi z serwera
+            .catch(error => console.log(error));
+
+        function getResponse(data) {
+            dataJSON = JSON.stringify(data, null, 5)
+            Id = String(data._id)
+
+            document.getElementById("komunikat").style.display = "flex"
+            document.getElementById("komunikat").innerHTML = "new car with id = " + Id + " added to database"
+        }
+    }
+</script>
